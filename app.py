@@ -203,10 +203,11 @@ with t2:
         fig = go.Figure()
         fig.add_trace(go.Bar(x=yr['YEAR'], y=yr['PRECTOTCORR'],
                              name='Annual Rainfall', marker_color='#1565c0', opacity=0.85))
-        z = np.polyfit(yr['YEAR'], yr['PRECTOTCORR'], 1)
-        p = np.poly1d(z)
-        fig.add_trace(go.Scatter(x=yr['YEAR'], y=p(yr['YEAR']),
-                                 name='Trend', line=dict(color='red', width=2, dash='dash')))
+        if len(yr) > 1:
+            z = np.polyfit(yr['YEAR'], yr['PRECTOTCORR'], 1)
+            p = np.poly1d(z)
+            fig.add_trace(go.Scatter(x=yr['YEAR'], y=p(yr['YEAR']),
+                                     name='Trend', line=dict(color='red', width=2, dash='dash')))
         fig.update_layout(title='Annual Total Rainfall Across UP (mm)',
                           xaxis_title='Year', yaxis_title='Total Rainfall (mm)',
                           height=400, plot_bgcolor='white', paper_bgcolor='white',
@@ -229,7 +230,7 @@ with t2:
         st.plotly_chart(fig2, use_container_width=True)
 
     # Annual rain days
-    yr_rain_days = fdf.groupby('YEAR').apply(lambda x: (x['PRECTOTCORR']>0).sum(), include_groups=False).reset_index()
+    yr_rain_days = fdf.groupby('YEAR')['PRECTOTCORR'].apply(lambda x: (x>0).sum()).reset_index()
     yr_rain_days.columns = ['Year','Rain Days']
     fig3 = px.line(yr_rain_days, x='Year', y='Rain Days',
                    markers=True, color_discrete_sequence=['#26a69a'],
