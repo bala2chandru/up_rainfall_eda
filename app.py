@@ -206,7 +206,7 @@ with t2:
         if len(yr) > 1:
             z = np.polyfit(yr['YEAR'], yr['PRECTOTCORR'], 1)
             p = np.poly1d(z)
-        fig.add_trace(go.Scatter(x=yr['YEAR'], y=p(yr['YEAR']),
+            fig.add_trace(go.Scatter(x=yr['YEAR'], y=p(yr['YEAR']),
                                  name='Trend', line=dict(color='red', width=2, dash='dash')))
         fig.update_layout(title='Annual Total Rainfall Across UP (mm)',
                           xaxis_title='Year', yaxis_title='Total Rainfall (mm)',
