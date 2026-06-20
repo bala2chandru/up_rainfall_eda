@@ -60,7 +60,11 @@ st.markdown("""
 # ── LOAD DATA ─────────────────────────────────────────────────────────
 @st.cache_data
 def load_data():
-    df = pd.read_csv(r"D:\up_rainfall_eda\UP_rainfall_dataset.csv")
+    import gdown, os
+    file_path = 'UP_rainfall_dataset.csv'
+    if not os.path.exists(file_path):
+        gdown.download(id='1_RrpvucHC1GINiZ_0udzCR__tbp0XDiQ', output=file_path, quiet=False)
+    df = pd.read_csv(file_path)
     df['DISTRICT'] = df['DISTRICT'].str.strip().str.title()
     df['DATE'] = pd.to_datetime(df[['YEAR','MO','DY']].rename(
         columns={'YEAR':'year','MO':'month','DY':'day'}))
