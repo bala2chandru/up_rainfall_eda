@@ -203,8 +203,9 @@ with t2:
         fig = go.Figure()
         fig.add_trace(go.Bar(x=yr['YEAR'], y=yr['PRECTOTCORR'],
                              name='Annual Rainfall', marker_color='#1565c0', opacity=0.85))
-        z = np.polyfit(yr['YEAR'], yr['PRECTOTCORR'], 1)
-        p = np.poly1d(z)
+        if len(yr) > 1:
+            z = np.polyfit(yr['YEAR'], yr['PRECTOTCORR'], 1)
+            p = np.poly1d(z)
         fig.add_trace(go.Scatter(x=yr['YEAR'], y=p(yr['YEAR']),
                                  name='Trend', line=dict(color='red', width=2, dash='dash')))
         fig.update_layout(title='Annual Total Rainfall Across UP (mm)',
